@@ -1,2 +1,2 @@
-# measuring_deformation_fingerpads
-Using image processing algorithms to measure deformation in finger pad from individual video frames to establish change in configuration when force is applied
+# measuring_deformation
+Using image processing algorithms to measure deformation and graphically representing deformation vs force in soft objects from individual video frames to establish change in configuration when force is applied
