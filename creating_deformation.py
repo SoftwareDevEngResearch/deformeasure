@@ -30,10 +30,10 @@ import cairo
 
 
 # Function will generate reference image, deformed image and provide x&y translation arrays
-def generate_images(image_size, seed, a1, b2, c3, d4, e5, f6):
-    gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6)
-    gen_def(image_size, seed, a1, b2, c3, d4, e5, f6)
-    calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6)
+def generate_images(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+    gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
+    gen_def(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
+    calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
 
 
 # Will draw speckles using uniform random distribution, change seed for different speckle pattern
@@ -65,7 +65,7 @@ def draw_speckles(context, seed):
 
 
 # Calculates x and y displacements between reference image and deformed image, according to transformation matrix
-def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6):
+def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     # create transformation matrix
     trans_matrix = [[a1, c3], [b2, d4]]
 
@@ -88,11 +88,11 @@ def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6):
     xd = (x - orig_x)
     yd = (y - orig_y)
 
-    name = filename(image_size, seed, a1, b2, c3, d4, e5, f6)
 
-    x_name = "x_trans_" + name
 
-    y_name = "y_trans_" + name
+    x_name = "x_trans_" + filename
+
+    y_name = "y_trans_" + filename
 
     savetxt_compact(x_name, xd)
 
@@ -100,7 +100,7 @@ def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6):
 
 
 # Generate reference images
-def gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6):
+def gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     WIDTH, HEIGHT = image_size, image_size
 
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
@@ -112,15 +112,13 @@ def gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6):
 
     context.close_path()
 
-    name = filename(image_size, seed, a1, b2, c3, d4, e5, f6)
-
-    img_name = "ref_" + name + ".bmp"
+    img_name = "ref_" + filename + ".bmp"
 
     write_image(surface, image_size, img_name)
 
 
 # Generate deformed images
-def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6):
+def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     WIDTH, HEIGHT = image_size, image_size
 
     format = cairo.FORMAT_ARGB32
@@ -150,18 +148,11 @@ def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6):
 
     context.close_path()
 
-    name = filename(image_size, seed, a1, b2, c3, d4, e5, f6)
-
-    img_name = "def_" + name + ".bmp"
+    img_name = "def_" + filename + ".bmp"
 
     write_image(surface, image_size, img_name)
 
 
-def filename(image_size, seed, a1, b2, c3, d4, e5, f6):
-    matrix = '{:.2f}'.format(a1) + "_" + '{:.2f}'.format(b2) + "_" + '{:.2f}'.format(c3) + "_" + '{:.2f}'.format(
-        d4) + "_" + '{:.2f}'.format(e5) + "_" + '{:.2f}'.format(f6)
-    filename = str(image_size) + "_" + str(seed) + "_" + matrix.replace(".", "-")
-    return filename
 
 
 # Writes image to /img_gen directory in format as specified by filename (currently works for .bmp)
@@ -179,7 +170,7 @@ def write_image(surface, image_size, file_name):
 
 
 def savetxt_compact(fname, x, fmt="%.6g", delimiter=','):
-    with open(f"compact_{fname}.csv", 'w+') as fh:
+    with open(f"img_gen/compact_{fname}.csv", 'w+') as fh:
         for row in x:
             line = delimiter.join("0" if value == 0 else fmt % value for value in row)
             fh.write(line + '\n')
@@ -187,22 +178,20 @@ def savetxt_compact(fname, x, fmt="%.6g", delimiter=','):
 
 def main():
     if (len(sys.argv) == 1):
-        generate_images(50, 19, 1.1, 0.0, 0.0, 1, 0.0, 0.0)
+        generate_images(50, 19, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 'sample')
 
-    elif (len(sys.argv) == 9):
+    elif (len(sys.argv) == 10):
         try:
-            generate_images(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7],
-                            sys.argv[8])
+            generate_images(int(sys.argv[1]), int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), float(sys.argv[5]),
+                            float(sys.argv[6]), float(sys.argv[7]), float(sys.argv[8]), sys.argv[9])
         except TypeError:
             print(
-                "Type Error, input parameters are : int image_size, int seed, float a1, float b2, float c3, float d4, float e5, float f6. See documentation for specification of matrix elements.")
-        else:
-            print(
-                "Error, input parameters are : int image_size, int seed, float a1, float b2, float c3, float d4, float e5, float f6. See documentation for specification of matrix elements.")
+                "Type Error, input parameters are : int image_size, int seed, float a1, float b2, float c3, float d4, float e5, float f6, string filename. See documentation for specification of matrix elements.")
+
 
     else:
         print(
-            "Requires parameters: image_size, seed, a1, b2, c3, d4, e5, f6. Default generation is: 50,19,1.1,0.0,0.0,1,0.0,0.0")
+            "Requires parameters: image_size, seed, a1, b2, c3, d4, e5, f6, filename. Default generation is: 50,19,1.1,0.0,0.0,1,0.0,0.0,sample")
 
 
 if __name__ == "__main__":
