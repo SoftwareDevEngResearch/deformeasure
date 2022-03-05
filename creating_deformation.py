@@ -5,8 +5,8 @@ from math import *
 import math
 import os
 import cairo
-
-
+import time
+import imageio
 # Requires pycairo & pkg-config
 # Refer here: https://pycairo.readthedocs.io/en/latest/getting_started.html
 
@@ -26,14 +26,50 @@ import cairo
 
 # (a1&d4):provide scale
 # (c3&b2):provide shear
-# (ef+f6):provide translation
+# (e5+f6):provide translation
+
 
 
 # Function will generate reference image, deformed image and provide x&y translation arrays
-def generate_images(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
-    gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
-    gen_def(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
-    calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
+def generate(image_size, seed, a1, b2, c3, d4, e5, f6, filename,mode):
+    if mode == 'video':
+        gen_ref(image_size, seed, filename, mode)
+        gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
+        calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename, mode)
+    elif mode == 'image':
+        gen_ref(image_size, seed, filename, mode)
+        gen_img(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
+        calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename, mode)
+    else:
+        print("Enter mode video or image")
+
+
+def gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+    original_dir = os.path.dirname(os.path.realpath(__file__))
+    save_dir = original_dir + "/generated/video/def"
+
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    gif = []
+    video_name = "def_" + filename + ".gif"
+    os.chdir(save_dir)
+    for i in range(1, 11):
+        frame = gen_def(image_size, seed, a1, b2/10 * i, c3/10 * i, d4, e5/10 * i , f6/10 * i)
+        gif.append(frame)
+    imageio.mimsave(video_name, gif, 'GIF')
+    os.chdir(original_dir)
+
+def gen_img(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+    original_dir = os.path.dirname(os.path.realpath(__file__))
+    save_dir = original_dir + "/generated/image/def"
+
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    file_name = "def_" + filename + ".bmp"
+    os.chdir(save_dir)
+    out = gen_def(image_size, seed, a1, b2, c3, d4, e5, f6)
+    out.save(save_dir + "/" + file_name)
+    os.chdir(original_dir)
 
 
 # Will draw speckles using uniform random distribution, change seed for different speckle pattern
@@ -65,7 +101,7 @@ def draw_speckles(context, seed):
 
 
 # Calculates x and y displacements between reference image and deformed image, according to transformation matrix
-def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename, mode):
     # create transformation matrix
     trans_matrix = [[a1, c3], [b2, d4]]
 
@@ -90,17 +126,17 @@ def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
 
 
 
-    x_name = "x_trans_" + filename
+    x_name = "x_" + filename
 
-    y_name = "y_trans_" + filename
+    y_name = "y_" + filename
 
-    savetxt_compact(x_name, xd)
+    savetxt_compact(x_name, xd, mode)
 
-    savetxt_compact(y_name, yd)
+    savetxt_compact(y_name, yd, mode)
 
 
 # Generate reference images
-def gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+def gen_ref(image_size, seed, filename, mode):
     WIDTH, HEIGHT = image_size, image_size
 
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
@@ -114,11 +150,11 @@ def gen_ref(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
 
     img_name = "ref_" + filename + ".bmp"
 
-    write_image(surface, image_size, img_name)
+    write_image(surface, image_size, img_name, mode)
 
 
 # Generate deformed images
-def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6):
     WIDTH, HEIGHT = image_size, image_size
 
     format = cairo.FORMAT_ARGB32
@@ -139,7 +175,7 @@ def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
 
     # (a1&d4):provide scale
     # (c3&b2):provide shear
-    # (ef+f6):provide translation
+    # (e5+f6):provide translation
 
     mtx = cairo.Matrix(a1, b2, c3, d4, e5, f6)
     context.transform(mtx)
@@ -148,16 +184,16 @@ def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
 
     context.close_path()
 
-    img_name = "def_" + filename + ".bmp"
-
-    write_image(surface, image_size, img_name)
-
+    buf = surface.get_data()
+    data = np.ndarray(shape=(image_size, image_size), dtype=np.uint32, buffer=buf)
+    out = Image.fromarray(data, 'RGBA')
+    return out
 
 
 
 # Writes image to /img_gen directory in format as specified by filename (currently works for .bmp)
-def write_image(surface, image_size, file_name):
-    save_dir = os.path.dirname(os.path.realpath(__file__)) + "/img_gen"
+def write_image(surface, image_size, file_name,mode):
+    save_dir = os.path.dirname(os.path.realpath(__file__)) + f"/generated/{mode}/ref"
 
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -169,29 +205,30 @@ def write_image(surface, image_size, file_name):
     out.save(save_dir + "/" + file_name)
 
 
-def savetxt_compact(fname, x, fmt="%.6g", delimiter=','):
-    with open(f"img_gen/compact_{fname}.csv", 'w+') as fh:
+def savetxt_compact(fname, x, mode, fmt="%.6g", delimiter=','):
+    with open(f"generated/{mode}/def/def_{fname}.csv", 'w+') as fh:
         for row in x:
             line = delimiter.join("0" if value == 0 else fmt % value for value in row)
             fh.write(line + '\n')
 
 
+
+
 def main():
     if (len(sys.argv) == 1):
-        generate_images(50, 19, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 'sample')
+        generate(50, 19, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 'sample', 'image')
 
-    elif (len(sys.argv) == 10):
+    elif (len(sys.argv) == 11):
         try:
-            generate_images(int(sys.argv[1]), int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), float(sys.argv[5]),
-                            float(sys.argv[6]), float(sys.argv[7]), float(sys.argv[8]), sys.argv[9])
+            generate(int(sys.argv[1]), int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), float(sys.argv[5]), float(sys.argv[6]), float(sys.argv[7]), float(sys.argv[8]), sys.argv[9], sys.argv[10])
         except TypeError:
             print(
-                "Type Error, input parameters are : int image_size, int seed, float a1, float b2, float c3, float d4, float e5, float f6, string filename. See documentation for specification of matrix elements.")
+                "Type Error, input parameters are : int image_size, int seed, float a1, float b2, float c3, float d4, float e5, float f6, string filename, string mode. See documentation for specification of matrix elements.")
 
 
     else:
         print(
-            "Requires parameters: image_size, seed, a1, b2, c3, d4, e5, f6, filename. Default generation is: 50,19,1.1,0.0,0.0,1,0.0,0.0,sample")
+            "Requires parameters: image_size, seed, a1, b2, c3, d4, e5, f6, filename. Default generation is: 50,19,1.0,0.0,0.0,1.0,0.0,0.0,sample,image")
 
 
 if __name__ == "__main__":

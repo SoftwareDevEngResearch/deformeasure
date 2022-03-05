@@ -1,4 +1,4 @@
-from CFirstOrder import CFirstOrder
+from c_first_order import CFirstOrder
 
 from math import floor, ceil
 from datetime import datetime
@@ -6,17 +6,15 @@ from datetime import datetime
 import numpy as np
 from PIL import Image
 from scipy.interpolate import RectBivariateSpline
-
 from joblib import Parallel, delayed
 import multiprocessing
 
 
-class DIC_NR:
+class DIC_NR(object):
     def __init__(self, debug=False):
         self.debug = debug
 
-
-    def set_parameters(self, ref_img: str, def_img: str, subset_size: int = 21, ini_guess: list = [0, 0]):
+    def set_parameters(self, ref_img, def_img, subset_size, ini_guess):
         # Initialize variables
         self.subset_size = subset_size
         self.spline_order = 5
@@ -44,7 +42,7 @@ class DIC_NR:
         # Termination condition for newton-raphson iteration
         self.Max_num_iter = 40  # maximum number of iterations
         self.TOL = [0, 0]
-        self.TOL[0] = 10 ** (-8)  # change in correlation coeffiecient
+        self.TOL[0] = 10 ** (-8)  # change in correlation coefficient
         self.TOL[1] = 10 ** (-8) / 2  # change in sum of all gradients.
 
         '''
@@ -52,9 +50,9 @@ class DIC_NR:
         must away from edge greater than half of subset adding 15 to it to have
         range of initial guess accuracy.
         '''
-        # +15 due to range of calc in initial_guess
+        # +10 due to range of calc in initial_guess
         # border is number of places from edge required
-        border = floor((self.subset_size / 2) + 15)
+        border = floor((self.subset_size / 2) + 10)
         # Due to 0 indexing, min position can be placed "at" border.
         self.Xmin = border
         self.Ymin = self.Xmin
@@ -66,17 +64,12 @@ class DIC_NR:
         self.Xp = self.Xmin
         self.Yp = self.Ymin
 
-        if (self.Xp < self.Xmin) or (self.Yp < self.Ymin) or (self.Xp > self.Xmax) or (self.Yp > self.Ymax):
-            raise ValueError('Process terminated!!! First point of centre of subset is on the edge of the image. ')
-
         self.initial_guess()
         self.fit_spline()
 
         self.cfo = CFirstOrder()
         self.cfo.set_image(self.ref_image, self.subset_size)
         self.cfo.set_splines(self.def_interp, self.def_interp_x, self.def_interp_y)
-
-        self.initialised = True
 
     def initial_guess(self, ref_img=None, def_img=None):
         # For use in testing initial guess
@@ -93,8 +86,8 @@ class DIC_NR:
         if (q_0[0] < -15 or q_0[0] > 15 or q_0[1] < -15 or q_0[1] > 15):
             raise error("Initial guess outside of range, must be within +/- 15.")
 
-        # check all values of u & v within +/- 15 range of initial guess
-        range_ = 15
+        # check all values of u & v within +/- 10 range of initial guess
+        range_ = 10
         u_check = np.arange((round(q_0[0]) - range_), (round(q_0[0]) + range_) + 1, 1, dtype=int)
         v_check = np.arange((round(q_0[1]) - range_), (round(q_0[1]) + range_) + 1, 1, dtype=int)
 
@@ -143,7 +136,7 @@ class DIC_NR:
         Y_size, X_size, tmp = self.ref_image.shape
 
         # Define the deformed image's coordinates
-        X_defcoord = np.arange(0, X_size, dtype=int)  # Maybe zero?
+        X_defcoord = np.arange(0, X_size, dtype=int)
         Y_defcoord = np.arange(0, Y_size, dtype=int)
 
         # Fit spline
@@ -152,21 +145,18 @@ class DIC_NR:
 
         # Evaluate derivatives at coordinates
         self.def_interp_x = self.def_interp(X_defcoord, Y_defcoord, 0, 1)
+
         self.def_interp_y = self.def_interp(X_defcoord, Y_defcoord, 1, 0)
 
-
-
-    def sequential_calculate(self, calc_start_time):
+    def sequential_calculate(self):
         for yy in range(self.Ymin, self.Ymax + 1):
             if yy > self.Ymin:
                 self.q_k[0:6] = self.DEFORMATION_PARAMETERS[yy - 1, self.Xmin, 0:6]
 
             for xx in range(self.Xmin, self.Xmax + 1):
-                # Points for correlation and initializaing the q matrix
+                # Points for correlation and initializing the q matrix
                 self.Xp = xx
                 self.Yp = yy
-
-                start = datetime.now() - calc_start_time
 
                 # __________OPTIMIZATION ROUTINE: FIND BEST FIT____________________________
                 # Initialize some values
@@ -196,7 +186,6 @@ class DIC_NR:
                     C_last = C  # Save the C value for comparison in the next iteration
                     GRAD_last = GRAD  # Save the GRAD value for comparison in the next iteration
                 # _________________________________________________________________________
-                end = (datetime.now() - calc_start_time) - start
 
                 # _______STORE RESULTS AND PREPARE INDICES OF NEXT SUBSET__________________
                 # Store the current displacements
@@ -206,29 +195,26 @@ class DIC_NR:
                 self.DEFORMATION_PARAMETERS[yy, xx, 3] = self.q_k[3]
                 self.DEFORMATION_PARAMETERS[yy, xx, 4] = self.q_k[4]
                 self.DEFORMATION_PARAMETERS[yy, xx, 5] = self.q_k[5]
-                self.DEFORMATION_PARAMETERS[yy, xx, 6] = 1 - C  # correlation co-efficient final value
-
-                # store points which are correlated in reference image i.e. center of subset
-                self.DEFORMATION_PARAMETERS[yy, xx, 7] = self.Xp
-                self.DEFORMATION_PARAMETERS[yy, xx, 8] = self.Yp
-
-                self.DEFORMATION_PARAMETERS[yy, xx, 9] = n  # number of iterations
-                self.DEFORMATION_PARAMETERS[yy, xx, 10] = start.total_seconds()  # t_tmp # time of spline process
-                self.DEFORMATION_PARAMETERS[yy, xx, 11] = end.total_seconds()  # t_optim #time of optimization process
 
             if self.debug:
                 print(yy)
                 print(xx)
 
-    def calculate(self):
-        if not self.initialised:
-            raise error("Tried to run calculate before setting parameters. Please use set_parameters first.")
+    def calculate_from_image(self, ref_img: str, def_img: str, subset_size: int = 11, ini_guess: list = [0, 0]):
+        self.set_parameters(ref_img, def_img, subset_size, ini_guess)
+        self.DEFORMATION_PARAMETERS = np.zeros((self.Y_size, self.X_size, 6), dtype=float)
+        self.sequential_calculate()
 
-        self.DEFORMATION_PARAMETERS = np.zeros((self.Y_size, self.X_size, 12), dtype=float)
+        return self.DEFORMATION_PARAMETERS[:, :, 0:2]
 
-        calc_start_time = datetime.now()
+    def calculate_from_video(self, ref_img: str, def_video: str, subset_size: int = 11, ini_guess: list = [0, 0]):
 
-
-        self.sequential_calculate(calc_start_time)
-
-        return self.DEFORMATION_PARAMETERS
+        video = Image.open(def_video)
+        list = []
+        for i in range(video.n_frames):
+            video.seek(i)
+            video.save('temp.bmp')
+            results = self.calculate_from_image(ref_img, 'temp.bmp', subset_size, ini_guess)
+            list.append(results)
+        video.close()
+        return list
