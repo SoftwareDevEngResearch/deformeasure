@@ -19,22 +19,21 @@ def vis_plotter(x, y, img):
     plt.title("X Deformations")
     imgplot = plt.imshow(x)
     imgplot.set_cmap('YlGnBu')
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
+    plt.xlabel('X')
+    plt.ylabel('Y')
     plt.colorbar()
 
     plt.subplot(1, 3, 3)
     plt.title("Y Deformations")
     imgplot = plt.imshow(y)
     imgplot.set_cmap('YlGnBu')
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
+    plt.xlabel('X')
+    plt.ylabel('Y')
     plt.colorbar()
-
+    plt.tight_layout()
     plt.show()
-    time.sleep(0.5)
-    plt.close(ig)
-    return
+
+
 
 class Visualization():
     def __init__(self, mode=None, def_video=None, def_image=None, x=None, y=None):

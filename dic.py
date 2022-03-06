@@ -215,6 +215,7 @@ class DIC_NR(object):
             video.seek(i)
             video.save('temp.bmp')
             results = self.calculate_from_image(ref_img, 'temp.bmp', subset_size, ini_guess)
+            ini_guess = results[self.Ymin, self.Xmin, 0:2]
             list.append(results)
         video.close()
         return list
