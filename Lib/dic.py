@@ -1,4 +1,4 @@
-from Lib.c_first_order import CFirstOrder
+from c_first_order import CFirstOrder
 from math import floor
 import numpy as np
 from PIL import Image

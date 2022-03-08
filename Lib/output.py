@@ -3,7 +3,7 @@ import os
 
 class Output():
     def __init__(self, mode=None, x=None, y=None, filename='default'):
-        self.save_dir = os.path.dirname(os.path.realpath(__file__)) + "/output/"
+        self.save_dir = os.path.dirname(os.path.realpath(__file__)) + "/../output/"
         self.file_name = filename
         if x is not None:
             self.x = x

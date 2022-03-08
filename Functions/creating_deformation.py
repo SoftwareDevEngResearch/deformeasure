@@ -44,7 +44,7 @@ def generate(image_size, seed, a1, b2, c3, d4, e5, f6, filename,mode):
 
 
 def gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
-    original_dir = os.path.dirname(os.path.realpath(__file__))
+    original_dir = os.path.dirname(os.path.realpath(__file__))+"/../"
     save_dir = original_dir + "/generated/video/def"
 
     if not os.path.exists(save_dir):
@@ -59,7 +59,7 @@ def gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     os.chdir(original_dir)
 
 def gen_img(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
-    original_dir = os.path.dirname(os.path.realpath(__file__))
+    original_dir = os.path.dirname(os.path.realpath(__file__))+"/../"
     save_dir = original_dir + "/generated/image/def"
 
     if not os.path.exists(save_dir):
@@ -192,7 +192,7 @@ def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6):
 
 # Writes image to /img_gen directory in format as specified by filename (currently works for .bmp)
 def write_image(surface, image_size, file_name,mode):
-    save_dir = os.path.dirname(os.path.realpath(__file__)) + f"/generated/{mode}/ref"
+    save_dir = os.path.dirname(os.path.realpath(__file__)) + f"/../generated/{mode}/ref"
 
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -205,7 +205,8 @@ def write_image(surface, image_size, file_name,mode):
 
 
 def savetxt_compact(fname, x, mode, fmt="%.6g", delimiter=','):
-    with open(f"generated/{mode}/def/def_{fname}.csv", 'w+') as fh:
+    curr_dir = os.path.dirname(os.path.realpath(__file__))
+    with open(curr_dir + f"/generated/{mode}/def/def_{fname}.csv", 'w+') as fh:
         for row in x:
             line = delimiter.join("0" if value == 0 else fmt % value for value in row)
             fh.write(line + '\n')

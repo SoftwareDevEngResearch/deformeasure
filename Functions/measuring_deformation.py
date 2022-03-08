@@ -3,9 +3,11 @@ from PIL import Image
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
-from Lib.dic import DIC_NR
-from Lib.visualization import Visualization
-from Lib.output import Output
+import sys
+sys.path.append('../Lib/')
+from dic import DIC_NR
+from visualization import Visualization
+from output import Output
 
 def main():
     parser = argparse.ArgumentParser(

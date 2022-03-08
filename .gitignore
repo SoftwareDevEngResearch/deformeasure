@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # Temp bmp file
-temp.bmp
+Functions/temp.bmp
 
 
