@@ -1,13 +1,9 @@
 from Lib.c_first_order import CFirstOrder
-
-from math import floor, ceil
-from datetime import datetime
-
+from math import floor
 import numpy as np
 from PIL import Image
 from scipy.interpolate import RectBivariateSpline
-from joblib import Parallel, delayed
-import multiprocessing
+
 
 
 class DIC_NR(object):

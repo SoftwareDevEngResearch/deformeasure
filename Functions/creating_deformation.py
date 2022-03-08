@@ -5,7 +5,6 @@ from math import *
 import math
 import os
 import cairo
-import time
 import imageio
 # Requires pycairo & pkg-config
 # Refer here: https://pycairo.readthedocs.io/en/latest/getting_started.html
