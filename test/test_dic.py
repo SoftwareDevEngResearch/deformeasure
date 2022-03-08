@@ -8,8 +8,8 @@ from scipy.interpolate import RectBivariateSpline
 import math
 PARENT_DIR = os.path.dirname(os.path.realpath(__file__)) + "/../"
 sys.path.append(PARENT_DIR)
-from dic import DIC_NR
-from c_first_order import CFirstOrder
+from Lib.dic import DIC_NR
+from Lib.c_first_order import CFirstOrder
 TEST_IMAGE_DIR = os.path.dirname(os.path.realpath(__file__)) + "/testing_images/"
 
 class Test_set_parameters(unittest.TestCase):

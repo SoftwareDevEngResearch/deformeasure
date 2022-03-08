@@ -1,4 +1,4 @@
-from c_first_order import CFirstOrder
+from Lib.c_first_order import CFirstOrder
 
 from math import floor, ceil
 from datetime import datetime
