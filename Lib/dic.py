@@ -1,4 +1,7 @@
-# from c_first_order import CFirstOrder
+try:
+    from c_first_order import CFirstOrder
+except:
+    pass
 from math import floor
 import numpy as np
 from PIL import Image
