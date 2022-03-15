@@ -14,8 +14,8 @@
 #
 import os
 import sys
-sys.path.append(os.path.abspath('../Functions'))
-sys.path.append(os.path.abspath('../Lib'))
+sys.path.append(os.path.abspath('../deformeasure/Functions'))
+sys.path.append(os.path.abspath('../deformeasure/Lib'))
 
 
 # -- Project information -----------------------------------------------------
