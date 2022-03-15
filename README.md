@@ -1,5 +1,17 @@
 [![Build Status](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure.svg?branch=main)](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure)
-# measuring_deformation
+#deformeasure
+
+## About
 This is a software package to measure deformation from images or frames from videos using Digital Image Correlation(DIC). 
 Another capability is to create deformed images and videos using cairo. 
 The package provides a command line interface which demonstrates the capabilities of measuring deformation from either images or videos and creating visualisations and storing the output in a csv file.
+
+## Installation
+
+- To use the CLI provided with the package, Clone from GitHub:
+ 'git clone https://github.com/SoftwareDevEngResearch/deformeasure'
+
+
+
+Install the package directly from github via pip:
+'python -m pip install git+https://github.com/SoftwareDevEngResearch/deformeasure'
