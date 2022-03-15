@@ -406,7 +406,7 @@ def main():
 
     else:
         print(
-            "Requires parameters: image_size, seed, a1, b2, c3, d4, e5, f6, filename. Default generation is: 50,19,1.0,0.0,0.0,1.0,0.0,0.0,sample,image")
+            "Requires parameters: image_size, seed, a1, b2, c3, d4, e5, f6, filename, mode. Default generation is: 50,19,1.0,0.0,0.0,1.0,0.0,0.0,sample,image")
 
 
 if __name__ == "__main__":
