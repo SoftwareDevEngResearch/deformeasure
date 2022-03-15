@@ -1,0 +1,321 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>creating_deformation module &#8212; deformeasure  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-creating_deformation">
+<span id="creating-deformation-module"></span><h1>creating_deformation module<a class="headerlink" href="#module-creating_deformation" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="creating_deformation.calc_translations">
+<code class="descclassname">creating_deformation.</code><code class="descname">calc_translations</code><span class="sig-paren">(</span><em>image_size</em>, <em>seed</em>, <em>a1</em>, <em>b2</em>, <em>c3</em>, <em>d4</em>, <em>e5</em>, <em>f6</em>, <em>filename</em>, <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.calc_translations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates x and y displacements between reference image and deformed image, according to transformation matrix</p>
+<p>Matrix transforms used for deformations
+[a1, c3, e5,
+b2, d4, f6,
+0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+x’ = a1*x + c3*y + e5
+y’ = d4*y + b2*x + f6
+The results will be stored in generated directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image_size</strong> (<em>int</em>) – Size of the generated reference and deformed images and videos.</li>
+<li><strong>seed</strong> (<em>int</em>) – Seed value for random generator.</li>
+<li><strong>a1</strong> (<em>float</em>) – Scale in x direction.</li>
+<li><strong>b2</strong> (<em>float</em>) – Shear in y direction.</li>
+<li><strong>c3</strong> (<em>float</em>) – Shear in x direction.</li>
+<li><strong>d4</strong> (<em>float</em>) – Scale in y direction.</li>
+<li><strong>e5</strong> (<em>float</em>) – Translation in x direction.</li>
+<li><strong>f6</strong> (<em>float</em>) – Translation in y direction.</li>
+<li><strong>filename</strong> (<em>string</em>) – name of the file, the results will be stored in output directory.</li>
+<li><strong>mode</strong> (<em>string</em>) – Option to generate deformed image or video.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.draw_speckles">
+<code class="descclassname">creating_deformation.</code><code class="descname">draw_speckles</code><span class="sig-paren">(</span><em>context</em>, <em>seed</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.draw_speckles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw speckles using uniform random distribution, change seed for different speckle pattern</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>context</strong> (<em>cairo.Context</em>) – Object of Context cairo class</li>
+<li><strong>seed</strong> (<em>int</em>) – Seed value for random generator.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.gen_def">
+<code class="descclassname">creating_deformation.</code><code class="descname">gen_def</code><span class="sig-paren">(</span><em>image_size</em>, <em>seed</em>, <em>a1</em>, <em>b2</em>, <em>c3</em>, <em>d4</em>, <em>e5</em>, <em>f6</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.gen_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to generate deformed images and videos</p>
+<p>Matrix transforms used for deformations
+[a1, c3, e5,
+b2, d4, f6,
+0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+x’ = a1*x + c3*y + e5
+y’ = d4*y + b2*x + f6</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image_size</strong> (<em>int</em>) – Size of the generated deformed image.</li>
+<li><strong>seed</strong> (<em>int</em>) – Seed value for random generator.</li>
+<li><strong>a1</strong> (<em>float</em>) – Scale in x direction.</li>
+<li><strong>b2</strong> (<em>float</em>) – Shear in y direction.</li>
+<li><strong>c3</strong> (<em>float</em>) – Shear in x direction.</li>
+<li><strong>d4</strong> (<em>float</em>) – Scale in y direction.</li>
+<li><strong>e5</strong> (<em>float</em>) – Translation in x direction.</li>
+<li><strong>f6</strong> (<em>float</em>) – Translation in y direction.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.gen_img">
+<code class="descclassname">creating_deformation.</code><code class="descname">gen_img</code><span class="sig-paren">(</span><em>image_size</em>, <em>seed</em>, <em>a1</em>, <em>b2</em>, <em>c3</em>, <em>d4</em>, <em>e5</em>, <em>f6</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.gen_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function will generate deformed image</p>
+<p>Matrix transforms used for deformations
+[a1, c3, e5,
+b2, d4, f6,
+0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+x’ = a1*x + c3*y + e5
+y’ = d4*y + b2*x + f6
+The results will be stored in the directory /generated/image/def</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image_size</strong> (<em>int</em>) – Size of the generated deformed image.</li>
+<li><strong>seed</strong> (<em>int</em>) – Seed value for random generator.</li>
+<li><strong>a1</strong> (<em>float</em>) – Scale in x direction.</li>
+<li><strong>b2</strong> (<em>float</em>) – Shear in y direction.</li>
+<li><strong>c3</strong> (<em>float</em>) – Shear in x direction.</li>
+<li><strong>d4</strong> (<em>float</em>) – Scale in y direction.</li>
+<li><strong>e5</strong> (<em>float</em>) – Translation in x direction.</li>
+<li><strong>f6</strong> (<em>float</em>) – Translation in y direction.</li>
+<li><strong>filename</strong> (<em>string</em>) – name of the file, the results will be stored in output directory.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.gen_ref">
+<code class="descclassname">creating_deformation.</code><code class="descname">gen_ref</code><span class="sig-paren">(</span><em>image_size</em>, <em>seed</em>, <em>filename</em>, <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.gen_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate reference images</p>
+<p>Calls write_image function to save surface as .bmp file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image_size</strong> (<em>int</em>) – Size of the generated reference image.</li>
+<li><strong>seed</strong> (<em>int</em>) – Seed value for random generator.</li>
+<li><strong>filename</strong> (<em>string</em>) – name of the file, the results will be stored in output directory.</li>
+<li><strong>mode</strong> (<em>string</em>) – Option to generate deformed image or video.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.gen_video">
+<code class="descclassname">creating_deformation.</code><code class="descname">gen_video</code><span class="sig-paren">(</span><em>image_size</em>, <em>seed</em>, <em>a1</em>, <em>b2</em>, <em>c3</em>, <em>d4</em>, <em>e5</em>, <em>f6</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.gen_video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function will generate deformation video</p>
+<p>Matrix transforms used for deformations
+[a1, c3, e5,
+b2, d4, f6,
+0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+x’ = a1*x + c3*y + e5
+y’ = d4*y + b2*x + f6
+The results will be stored in the directory /generated/video/def</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image_size</strong> (<em>int</em>) – Size of the generated deformed video.</li>
+<li><strong>seed</strong> (<em>int</em>) – Seed value for random generator.</li>
+<li><strong>a1</strong> (<em>float</em>) – Scale in x direction.</li>
+<li><strong>b2</strong> (<em>float</em>) – Shear in y direction.</li>
+<li><strong>c3</strong> (<em>float</em>) – Shear in x direction.</li>
+<li><strong>d4</strong> (<em>float</em>) – Scale in y direction.</li>
+<li><strong>e5</strong> (<em>float</em>) – Translation in x direction.</li>
+<li><strong>f6</strong> (<em>float</em>) – Translation in y direction.</li>
+<li><strong>filename</strong> (<em>string</em>) – name of the file, the results will be stored in output directory.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.generate">
+<code class="descclassname">creating_deformation.</code><code class="descname">generate</code><span class="sig-paren">(</span><em>image_size</em>, <em>seed</em>, <em>a1</em>, <em>b2</em>, <em>c3</em>, <em>d4</em>, <em>e5</em>, <em>f6</em>, <em>filename</em>, <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function will generate reference image, deformed image or video and provide x&amp;y translation arrays</p>
+<p>Matrix transforms used for deformations
+[a1, c3, e5,
+b2, d4, f6,
+0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+x’ = a1*x + c3*y + e5
+y’ = d4*y + b2*x + f6
+The results will be stored in generated directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>image_size</strong> (<em>int</em>) – Size of the generated reference and deformed images and videos.</li>
+<li><strong>seed</strong> (<em>int</em>) – Seed value for random generator.</li>
+<li><strong>a1</strong> (<em>float</em>) – Scale in x direction.</li>
+<li><strong>b2</strong> (<em>float</em>) – Shear in y direction.</li>
+<li><strong>c3</strong> (<em>float</em>) – Shear in x direction.</li>
+<li><strong>d4</strong> (<em>float</em>) – Scale in y direction.</li>
+<li><strong>e5</strong> (<em>float</em>) – Translation in x direction.</li>
+<li><strong>f6</strong> (<em>float</em>) – Translation in y direction.</li>
+<li><strong>filename</strong> (<em>string</em>) – name of the file, the results will be stored in output directory.</li>
+<li><strong>mode</strong> (<em>string</em>) – Option to generate deformed image or video.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.main">
+<code class="descclassname">creating_deformation.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.savetxt_compact">
+<code class="descclassname">creating_deformation.</code><code class="descname">savetxt_compact</code><span class="sig-paren">(</span><em>fname</em>, <em>x</em>, <em>mode</em>, <em>fmt='%.6g'</em>, <em>delimiter='</em>, <em>'</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.savetxt_compact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="creating_deformation.write_image">
+<code class="descclassname">creating_deformation.</code><code class="descname">write_image</code><span class="sig-paren">(</span><em>surface</em>, <em>image_size</em>, <em>file_name</em>, <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#creating_deformation.write_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes reference image to generated directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>surface</strong> (<em>cairo.ImageSurface</em>) – Object of ImageSurface cairo class.</li>
+<li><strong>image_size</strong> (<em>int</em>) – Size of reference image.</li>
+<li><strong>file_name</strong> (<em>string</em>) – Name of the file.</li>
+<li><strong>mode</strong> (<em>string</em>) – Storing whether in generated/image or generated/video directory.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">deformeasure</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Satyam Bhawsinghka.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../../_sources/source/Functions/creating_deformation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
