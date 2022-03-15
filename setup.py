@@ -19,7 +19,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     license='MIT',
-    python_requires='==3.7',
+    python_requires='==3.7.12',
     zip_safe=False,
     packages=find_packages(),
     include_package_data=True,
