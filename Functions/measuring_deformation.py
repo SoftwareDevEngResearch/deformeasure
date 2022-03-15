@@ -1,10 +1,10 @@
 #!/bin/python3
 import argparse
-import sys
-sys.path.append('../Lib/')
-from dic import DIC_NR
-from visualization import Visualization
-from output import Output
+# import sys
+# sys.path.append('../Lib/')
+# from dic import DIC_NR
+# from visualization import Visualization
+# from output import Output
 
 def main():
     parser = argparse.ArgumentParser(
