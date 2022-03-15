@@ -9,10 +9,14 @@ The package provides a command line interface which demonstrates the capabilitie
 
 ## Installation
 
-- To use the CLI provided with the package, Clone from GitHub:
-    'git clone https://github.com/SoftwareDevEngResearch/deformeasure' 
+- To use the CLI provided with the package
+  - Clone from GitHub:
+     'git clone https://github.com/SoftwareDevEngResearch/deformeasure'
+  - Install the dependencies:
+      
+        
 
 
 
 Install the package directly from GitHub via pip:
-  'python -m pip install git+https://github.com/SoftwareDevEngResearch/deformeasure'
+    'python -m pip install git+https://github.com/SoftwareDevEngResearch/deformeasure'
