@@ -8,10 +8,30 @@ from scipy.interpolate import RectBivariateSpline
 
 class DIC_NR(object):
     def __init__(self, debug=False):
+        """DIC class calculates the deformation from either an image or a video.
+
+        Parameters
+        ----------
+        debug : bool
+            Activate debug mode
+        """
         self.debug = debug
 
     def set_parameters(self, ref_img, def_img, subset_size, ini_guess):
-        # Initialize variables
+        """Initialize variables
+
+        Parameters
+        ----------
+        ref_img : string
+            Reference Image
+        def_img : string
+            Deformed Image
+        subset_size : int
+            Size of the subset
+        ini_guess : list
+            Initial guess of deformation
+        """
+
         self.subset_size = subset_size
         self.spline_order = 5
         self.ini_guess = ini_guess
@@ -41,11 +61,11 @@ class DIC_NR(object):
         self.TOL[0] = 10 ** (-8)  # change in correlation coefficient
         self.TOL[1] = 10 ** (-8) / 2  # change in sum of all gradients.
 
-        '''
-        condition to check that point of interest is not close to edge. Point
-        must away from edge greater than half of subset adding 15 to it to have
-        range of initial guess accuracy.
-        '''
+
+        #condition to check that point of interest is not close to edge. Point
+        #must away from edge greater than half of subset adding 10 to it to have
+        #range of initial guess accuracy.
+
         # +10 due to range of calc in initial_guess
         # border is number of places from edge required
         border = floor((self.subset_size / 2) + 10)
@@ -68,7 +88,17 @@ class DIC_NR(object):
         self.cfo.set_splines(self.def_interp, self.def_interp_x, self.def_interp_y)
 
     def initial_guess(self, ref_img=None, def_img=None):
-        # For use in testing initial guess
+        """Calculating initial deformation parameters from user's initial guess
+
+        Parameters
+        ----------
+        ref_img : Image
+            Reference Image
+        def_img : Image
+            Deformed Image
+
+        """
+
         if type(ref_img) == type(None) or type(def_img) == type(None):
             ref_img = self.ref_image
             def_img = self.def_image
@@ -125,6 +155,9 @@ class DIC_NR(object):
         self.q_k = q_0[0:6]
 
     def fit_spline(self):
+        """Fitting spline to deformed image data
+
+        """
         if type(self.ref_image) == type(None):
             raise error("Tried to run fit_spline before supplying parameters")
 
@@ -145,6 +178,8 @@ class DIC_NR(object):
         self.def_interp_y = self.def_interp(X_defcoord, Y_defcoord, 1, 0)
 
     def sequential_calculate(self):
+        """Helper function to calculate deformation
+        """
         for yy in range(self.Ymin, self.Ymax + 1):
             if yy > self.Ymin:
                 self.q_k[0:6] = self.DEFORMATION_PARAMETERS[yy - 1, self.Xmin, 0:6]
@@ -197,6 +232,24 @@ class DIC_NR(object):
                 print(xx)
 
     def calculate_from_image(self, ref_img: str, def_img: str, subset_size: int = 11, ini_guess: list = [0, 0]):
+        """Calculates deformation from image
+
+        Parameters
+        ----------
+        ref_img : string
+            Name of the reference image
+        def_img : string
+            Name of the deformation image
+        subset_size : int
+            Size of the subset
+        ini_guess : list
+            Initial guess of deformation
+
+        Returns
+        -------
+        3D array
+            Deformations in x and y for each pixel
+        """
         self.set_parameters(ref_img, def_img, subset_size, ini_guess)
         self.DEFORMATION_PARAMETERS = np.zeros((self.Y_size, self.X_size, 6), dtype=float)
         self.sequential_calculate()
@@ -204,7 +257,24 @@ class DIC_NR(object):
         return self.DEFORMATION_PARAMETERS[:, :, 0:2]
 
     def calculate_from_video(self, ref_img: str, def_video: str, subset_size: int = 11, ini_guess: list = [0, 0]):
+        """Calculates deformation from video
 
+        Parameters
+        ----------
+        ref_img : string
+            Name of the reference image
+        def_img : string
+            Name of the deformation image
+        subset_size : int
+            Size of the subset
+        ini_guess : list
+            Initial guess of deformation
+
+        Returns
+        -------
+        list 3D array
+            Deformations in x and y for each pixel for each frame
+        """
         video = Image.open(def_video)
         list = []
         for i in range(video.n_frames):

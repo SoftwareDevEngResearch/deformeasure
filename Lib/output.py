@@ -2,7 +2,21 @@ import numpy
 import os
 
 class Output():
+
     def __init__(self, mode=None, x=None, y=None, filename='default'):
+        """Output class stores the output of deformations in output directory in a csv file
+
+        Parameters
+        ----------
+        mode : string
+            Flag whether the output is from deformation of image or video
+        x : float
+            Deformations in x
+        y : float
+            Deformations in y
+        filename : string
+            Name of the output file
+        """
         self.save_dir = os.path.dirname(os.path.realpath(__file__)) + "/../output/"
         self.file_name = filename
         if x is not None:
@@ -22,6 +36,9 @@ class Output():
             print("Enter mode either video or image")
 
     def output_video(self):
+        """
+        Deformations from a video are stored in a csv file
+        """
         with open(self.save_dir + f"def_x_{self.file_name}.csv", "w") as f:
             f.write(f"Deformation for frame {0}")
             f.write("\n")
@@ -51,6 +68,9 @@ class Output():
 
 
     def output_image(self):
+        """
+        Deformations from an image are stored in a csv file
+        """
         with open(self.save_dir + f"def_x_{self.file_name}.csv", "w") as f:
             numpy.savetxt(f, self.x, delimiter=',', fmt='%.2f')
         with open(self.save_dir + f"def_y_{self.file_name}.csv", "w") as f:

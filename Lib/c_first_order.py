@@ -3,16 +3,53 @@ import numpy as np
 
 
 class CFirstOrder(object):
+    """
+    Helper class to calculate gradient and hessian
+    """
     def set_image(self, ref_image, subset_size):
+        """Sets the reference image and subset size for object of this class.
+
+        Parameters
+        ----------
+        ref_image : Image
+            Reference Image
+        subset_size : int
+            size of the subset used for digital image correlation
+
+        """
         self.ref_image = ref_image
         self.subset_size = subset_size
 
     def set_splines(self, def_interp, def_interp_x, def_interp_y):
+        """Sets the parameters for deformation image.
+
+        Parameters
+        ----------
+        def_interp : RectBivariateSpline
+            deformation image spline
+        def_interp_x : RectBivariateSpline
+            deformation image spline x coordinates
+        def_interp_y : RectBivariateSpline
+            deformation image spline y coordinates
+
+        """
         self.def_interp = def_interp
         self.def_interp_x = def_interp_x
         self.def_interp_y = def_interp_y
 
     def define_deformed_subset(self, q, Xp, Yp):
+        """Defines the subset for deformed image.
+
+        Parameters
+        ----------
+        q : float
+            Deformation parameters
+        Xp : float
+            X coordinate of current point
+        Yp : float
+            Y coordinate of current point
+
+        """
         half_subset = floor(self.subset_size / 2)
 
         i = np.arange(-half_subset, half_subset + 1, dtype=int)
@@ -34,6 +71,27 @@ class CFirstOrder(object):
         self.Y = Yp + v + self.J + np.multiply(self.J, dv_dy) + np.multiply(self.I, dv_dx)
 
     def calculate(self, q, Xp, Yp, nargout=3):
+        """Calculates gradient and hessian.
+
+        Parameters
+        ----------
+        q : float
+            Deformation parameters
+        Xp : float
+            X coordinate of current point
+        Yp : float
+            Y coordinate of current point
+
+        Returns
+        -------
+        C : float
+            Closeness in subset between reference and deformed image
+        GRAD : float
+            Grdient
+        HESS : float
+            Hessian
+
+        """
         C = 0.0
         GRAD = 0.0
         HESS = 0.0

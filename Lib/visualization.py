@@ -1,10 +1,11 @@
-import numpy as np
+
 import matplotlib.pyplot as plt
 from PIL import Image
 
 
 def vis_plotter(x, y, img):
-
+    """Function to plot deformation in x and y along with the deformation image
+    """
 
     ig, ax = plt.subplots()
 
@@ -36,6 +37,22 @@ def vis_plotter(x, y, img):
 
 class Visualization():
     def __init__(self, mode=None, def_video=None, def_image=None, x=None, y=None):
+        """ Visualisation class helps visualize deformations pictorially
+
+        Parameters
+        ----------
+        mode : string
+            whether visualisation is for deformations from video or image
+        def_video : string
+            Name of the deformation video
+        def_image : string
+            Name of the deformation image
+        x : float
+            deformations in x
+        y : float
+            deformations in y
+
+        """
         if x is not None:
             self.x = x
         else:
@@ -61,6 +78,9 @@ class Visualization():
             print("Enter mode either video or image")
 
     def show_video(self):
+        """
+        Shows deformations from a video
+        """
         image = Image.open(self.video)
         # Display individual frames from the loaded animated GIF file
         for frame in range(image.n_frames):
@@ -70,6 +90,9 @@ class Visualization():
         image.close()
 
     def show_image(self):
+        """
+        Shows deformations from an image
+        """
         image = Image.open(self.image)
         vis_plotter(self.x, self.y, image)
         image.close()
