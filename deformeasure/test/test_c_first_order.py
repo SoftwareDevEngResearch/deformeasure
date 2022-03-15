@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 from scipy.interpolate import RectBivariateSpline
 import math
-PARENT_DIR = os.path.dirname(os.path.realpath(__file__)) + "/../deformeasure/Lib"
+PARENT_DIR = os.path.dirname(os.path.realpath(__file__)) + "/../Lib"
 sys.path.append(PARENT_DIR)
 from dic import DIC_NR
 from c_first_order import CFirstOrder
