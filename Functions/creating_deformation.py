@@ -6,31 +6,42 @@ import math
 import os
 import cairo
 import imageio
-# Requires pycairo & pkg-config
-# Refer here: https://pycairo.readthedocs.io/en/latest/getting_started.html
 
-# These functions allow for the generation of speckle images.
-# Images are generated via the use of a vector graphics library pycairo.
-# This allows for image transformations without the need for interpolation or resampling error consideration.
-# Precision necessary when measuring accuracy of DIC algorithm to sub-pixel level.
-# The x and y displacements can then be calculated precisely according to the transformation.
-
-# Matrix transforms used for deformations
-# [a1, c3, e5,
-# b2, d4, f6,
-# 0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
-
-# x' = a1*x + c3*y + e5
-# y' = d4*y + b2*x + f6
-
-# (a1&d4):provide scale
-# (c3&b2):provide shear
-# (e5+f6):provide translation
-
-
-
-# Function will generate reference image, deformed image and provide x&y translation arrays
 def generate(image_size, seed, a1, b2, c3, d4, e5, f6, filename,mode):
+    """Function will generate reference image, deformed image or video and provide x&y translation arrays
+
+    Matrix transforms used for deformations
+    [a1, c3, e5,
+    b2, d4, f6,
+    0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+    x' = a1*x + c3*y + e5
+    y' = d4*y + b2*x + f6
+    The results will be stored in generated directory
+
+    Parameters
+    ----------
+    image_size : int
+        Size of the generated reference and deformed images and videos.
+    seed : int
+        Seed value for random generator.
+    a1 : float
+        Scale in x direction.
+    b2 : float
+        Shear in y direction.
+    c3 : float
+        Shear in x direction.
+    d4 : float
+        Scale in y direction.
+    e5 : float
+        Translation in x direction.
+    f6 : float
+        Translation in y direction.
+    filename : string
+        name of the file, the results will be stored in output directory.
+    mode : string
+        Option to generate deformed image or video.
+
+    """
     if mode == 'video':
         gen_ref(image_size, seed, filename, mode)
         gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename)
@@ -44,6 +55,38 @@ def generate(image_size, seed, a1, b2, c3, d4, e5, f6, filename,mode):
 
 
 def gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+    """Function will generate deformation video
+
+    Matrix transforms used for deformations
+    [a1, c3, e5,
+    b2, d4, f6,
+    0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+    x' = a1*x + c3*y + e5
+    y' = d4*y + b2*x + f6
+    The results will be stored in the directory /generated/video/def
+
+    Parameters
+    ----------
+    image_size : int
+        Size of the generated deformed video.
+    seed : int
+        Seed value for random generator.
+    a1 : float
+        Scale in x direction.
+    b2 : float
+        Shear in y direction.
+    c3 : float
+        Shear in x direction.
+    d4 : float
+        Scale in y direction.
+    e5 : float
+        Translation in x direction.
+    f6 : float
+        Translation in y direction.
+    filename : string
+        name of the file, the results will be stored in output directory.
+
+    """
     original_dir = os.path.dirname(os.path.realpath(__file__))+"/../"
     save_dir = original_dir + "/generated/video/def"
 
@@ -59,6 +102,38 @@ def gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     os.chdir(original_dir)
 
 def gen_img(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
+    """Function will generate deformed image
+
+    Matrix transforms used for deformations
+    [a1, c3, e5,
+    b2, d4, f6,
+    0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+    x' = a1*x + c3*y + e5
+    y' = d4*y + b2*x + f6
+    The results will be stored in the directory /generated/image/def
+
+    Parameters
+    ----------
+    image_size : int
+        Size of the generated deformed image.
+    seed : int
+        Seed value for random generator.
+    a1 : float
+        Scale in x direction.
+    b2 : float
+        Shear in y direction.
+    c3 : float
+        Shear in x direction.
+    d4 : float
+        Scale in y direction.
+    e5 : float
+        Translation in x direction.
+    f6 : float
+        Translation in y direction.
+    filename : string
+        name of the file, the results will be stored in output directory.
+
+    """
     original_dir = os.path.dirname(os.path.realpath(__file__))+"/../"
     save_dir = original_dir + "/generated/image/def"
 
@@ -71,8 +146,18 @@ def gen_img(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     os.chdir(original_dir)
 
 
-# Will draw speckles using uniform random distribution, change seed for different speckle pattern
+
 def draw_speckles(context, seed):
+    """Draw speckles using uniform random distribution, change seed for different speckle pattern
+
+    Parameters
+    ----------
+    context : cairo.Context
+        Object of Context cairo class
+    seed : int
+        Seed value for random generator.
+
+    """
     # Create white background
     context.set_source_rgb(1, 1, 1)
     context.rectangle(0, 0, 1, 1)  # Rectangle(x0, y0, x1, y1)
@@ -99,8 +184,42 @@ def draw_speckles(context, seed):
         context.fill()
 
 
-# Calculates x and y displacements between reference image and deformed image, according to transformation matrix
+
 def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename, mode):
+    """Calculates x and y displacements between reference image and deformed image, according to transformation matrix
+
+    Matrix transforms used for deformations
+    [a1, c3, e5,
+    b2, d4, f6,
+    0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+    x' = a1*x + c3*y + e5
+    y' = d4*y + b2*x + f6
+    The results will be stored in generated directory
+
+    Parameters
+    ----------
+    image_size : int
+        Size of the generated reference and deformed images and videos.
+    seed : int
+        Seed value for random generator.
+    a1 : float
+        Scale in x direction.
+    b2 : float
+        Shear in y direction.
+    c3 : float
+        Shear in x direction.
+    d4 : float
+        Scale in y direction.
+    e5 : float
+        Translation in x direction.
+    f6 : float
+        Translation in y direction.
+    filename : string
+        name of the file, the results will be stored in output directory.
+    mode : string
+        Option to generate deformed image or video.
+
+    """
     # create transformation matrix
     trans_matrix = [[a1, c3], [b2, d4]]
 
@@ -134,8 +253,24 @@ def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename, mode):
     savetxt_compact(y_name, yd, mode)
 
 
-# Generate reference images
+#
 def gen_ref(image_size, seed, filename, mode):
+    """Generate reference images
+
+    Calls write_image function to save surface as .bmp file
+
+    Parameters
+    ----------
+    image_size : int
+        Size of the generated reference image.
+    seed : int
+        Seed value for random generator.
+    filename : string
+        name of the file, the results will be stored in output directory.
+    mode : string
+        Option to generate deformed image or video.
+
+    """
     WIDTH, HEIGHT = image_size, image_size
 
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
@@ -152,8 +287,38 @@ def gen_ref(image_size, seed, filename, mode):
     write_image(surface, image_size, img_name, mode)
 
 
-# Generate deformed images
+
 def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6):
+    """Helper function to generate deformed images and videos
+
+    Matrix transforms used for deformations
+    [a1, c3, e5,
+    b2, d4, f6,
+    0, 0, 1] these numbers relate to the .Matrix(1,2,3,4,5,6) variables
+    x' = a1*x + c3*y + e5
+    y' = d4*y + b2*x + f6
+
+
+    Parameters
+    ----------
+    image_size : int
+        Size of the generated deformed image.
+    seed : int
+        Seed value for random generator.
+    a1 : float
+        Scale in x direction.
+    b2 : float
+        Shear in y direction.
+    c3 : float
+        Shear in x direction.
+    d4 : float
+        Scale in y direction.
+    e5 : float
+        Translation in x direction.
+    f6 : float
+        Translation in y direction.
+
+    """
     WIDTH, HEIGHT = image_size, image_size
 
     format = cairo.FORMAT_ARGB32
@@ -190,8 +355,21 @@ def gen_def(image_size, seed, a1, b2, c3, d4, e5, f6):
 
 
 
-# Writes image to /img_gen directory in format as specified by filename (currently works for .bmp)
 def write_image(surface, image_size, file_name,mode):
+    """Writes reference image to generated directory
+
+    Parameters
+    ----------
+    surface : cairo.ImageSurface
+        Object of ImageSurface cairo class.
+    image_size : int
+        Size of reference image.
+    file_name : string
+        Name of the file.
+    mode : string
+        Storing whether in generated/image or generated/video directory.
+
+    """
     save_dir = os.path.dirname(os.path.realpath(__file__)) + f"/../generated/{mode}/ref"
 
     if not os.path.exists(save_dir):
