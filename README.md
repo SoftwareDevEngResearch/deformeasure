@@ -1,3 +1,4 @@
+[![Build Status](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure.svg?branch=main)](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure)
 # measuring_deformation
 This is a software package to measure deformation from images or frames from videos using Digital Image Correlation(DIC). 
 Another capability is to create deformed images and videos using cairo. 
