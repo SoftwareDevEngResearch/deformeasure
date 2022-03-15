@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+deformeasure/Lib/
 lib64/
 parts/
 sdist/
@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # Temp bmp file
-Functions/temp.bmp
+deformeasure/Functions/temp.bmp
 
 
