@@ -1,0 +1,12 @@
+name: test-environment
+channels:
+- defaults
+dependencies:
+    - python=3.7
+    - pytest>=7.0.1
+    - Pillow >=9.0.1
+    - numpy >= 1.21.5
+    - pycairo >= 1.20.1
+    - imageio >= 2.16.1
+    - matplotlib >= 3.5.1
+    - scipy >= 1.7.3
