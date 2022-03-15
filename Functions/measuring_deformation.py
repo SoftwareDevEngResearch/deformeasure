@@ -1,8 +1,5 @@
 #!/bin/python3
-from PIL import Image
 import argparse
-import numpy as np
-import matplotlib.pyplot as plt
 import sys
 sys.path.append('../Lib/')
 from dic import DIC_NR
@@ -49,7 +46,6 @@ def main():
     if args.def_video != None:
         dic = DIC_NR(args.debug_mode)
         results = dic.calculate_from_video(args.ref_image, args.def_video, args.subset_size, args.ini_guess)
-        np.set_printoptions(formatter={'float': "{0:0.2e}".format})
         x = []
         y = []
 
