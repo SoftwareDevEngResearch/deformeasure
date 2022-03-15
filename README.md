@@ -1,14 +1,14 @@
 [![Build Status](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure.svg?branch=main)](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure)
 
 
-##deformeasure
+# deformeasure
 
-### About
+## About
 This is a software package to measure deformation from images or frames from videos using Digital Image Correlation(DIC). 
 Another capability is to create deformed images and videos using cairo. 
 The package provides a command line interface which demonstrates the capabilities of measuring deformation from either images or videos and creating visualisations and storing the output in a csv file.
 
-### Installation
+## Installation
 The deformeasure package relies on the following packages:
 - Pillow 
 - numpy
@@ -16,6 +16,7 @@ The deformeasure package relies on the following packages:
 - imageio
 - matplotlib 
 - scipy 
+- pytest(**optional**)
 
 To use the CLI provided with the package
   - Clone from GitHub:
@@ -25,7 +26,12 @@ To use the CLI provided with the package
   
   `pip install -r requirements.txt`
   
+  - To install the package locally,
+  
+  `pip install /<PathToPackage>/deformeasure`
+  
 OR
+
 
 Install the package directly from GitHub via pip:
  
