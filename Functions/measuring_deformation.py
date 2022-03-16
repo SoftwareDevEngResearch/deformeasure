@@ -42,7 +42,7 @@ def main():
                         help="File to write formatted csv output.")
 
     parser.add_argument("-v", "--visualize", dest="visualize", action="store_true",
-                        help="Use debug print mode.")
+                        help="Visualize the deformations.")
 
     args = parser.parse_args()
 
