@@ -131,7 +131,12 @@ Measuring deformation from a video:
 ### Testing
 
 Once inside deformeasure, it can be tested by running pytest.
+
 `$ pytest`
+
+## License
+
+[MIT](https://github.com/SoftwareDevEngResearch/deformeasure/blob/main/LICENSE)
 
 ### Reference
 
