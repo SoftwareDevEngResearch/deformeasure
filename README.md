@@ -21,19 +21,41 @@ The deformeasure package relies on the following packages:
 To use the CLI provided with the package
   - Clone from GitHub:
   
-  `git clone https://github.com/SoftwareDevEngResearch/deformeasure`
+  `$ git clone https://github.com/SoftwareDevEngResearch/deformeasure`
   - Install the required version of dependencies:
   
-  `pip install -r requirements.txt`
+  `$ pip install -r requirements.txt`
   
   - To install the package locally,
   
-  `pip install /<PathToPackage>/deformeasure`
+  `$ pip install /<PathToPackage>/deformeasure`
   
 OR
 
 
 Install the package directly from GitHub via pip:
  
- `python -m pip install git+https://github.com/SoftwareDevEngResearch/deformeasure`
+ `$ python -m pip install git+https://github.com/SoftwareDevEngResearch/deformeasure`
+
+
+### Creating Deformation
+
+To use the capability of creating deformed images or videos, run the creatng_deformation.py script in Functions directory:
+
+- Run with default values:
+
+`$ python3 /<PathToPackage>/deformeasure/Functions/creating_deformation.py`
+
+- To get help with input parameters:
+
+`$ python3 /<PathToPackage>/deformeasure/Functions/creating_deformation.py --help`
+
+Details of the functions can be accessed [here](deformeasure/docs/build/html/index.html#)
+
+
+
+
+
+
+
 
