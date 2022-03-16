@@ -1,5 +1,5 @@
 [![Build Status](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure.svg?branch=main)](https://app.travis-ci.com/SatyamBhawsinghka/deformeasure)
-
+[![DOI](https://zenodo.org/badge/449419820.svg)](https://zenodo.org/badge/latestdoi/449419820)
 
 # deformeasure
 
