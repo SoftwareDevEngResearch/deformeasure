@@ -37,7 +37,7 @@ def generate(image_size, seed, a1, b2, c3, d4, e5, f6, filename,mode):
     f6 : float
         Translation in y direction.
     filename : string
-        name of the file, the results will be stored in output directory.
+        name of the file, the results will be stored in generated directory.
     mode : string
         Option to generate deformed image or video.
 
@@ -84,7 +84,7 @@ def gen_video(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     f6 : float
         Translation in y direction.
     filename : string
-        name of the file, the results will be stored in output directory.
+        name of the file, the results will be stored in generated directory.
 
     """
     original_dir = os.path.dirname(os.path.realpath(__file__))+"/../"
@@ -131,7 +131,7 @@ def gen_img(image_size, seed, a1, b2, c3, d4, e5, f6, filename):
     f6 : float
         Translation in y direction.
     filename : string
-        name of the file, the results will be stored in output directory.
+        name of the file, the results will be stored in generated directory.
 
     """
     original_dir = os.path.dirname(os.path.realpath(__file__))+"/../"
@@ -215,7 +215,7 @@ def calc_translations(image_size, seed, a1, b2, c3, d4, e5, f6, filename, mode):
     f6 : float
         Translation in y direction.
     filename : string
-        name of the file, the results will be stored in output directory.
+        name of the file, the results will be stored in generated directory.
     mode : string
         Option to generate deformed image or video.
 
@@ -266,7 +266,7 @@ def gen_ref(image_size, seed, filename, mode):
     seed : int
         Seed value for random generator.
     filename : string
-        name of the file, the results will be stored in output directory.
+        name of the file, the results will be stored in generated directory.
     mode : string
         Option to generate deformed image or video.
 
