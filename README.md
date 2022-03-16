@@ -90,7 +90,7 @@ will create three files in /deformeasure/generated/video/def/
 - *def_example_x.csv* (deformations in pixels in x)
 - *def_example_y.csv* (deformations in pixels in y)
 
-and a refrence image in /deformeasure/generated/video/ref/ *ref_example.bmp*
+and a reference image in /deformeasure/generated/video/ref/ *ref_example.bmp*
 
 ### Measuring Deformation
 
@@ -126,7 +126,7 @@ Measuring deformation from a video:
 
 `$ cd /<PathToPackage>/deformeasure/Functions/`
 
-`$ python3 measuring_deformation.py -ri ../generated/video/ref/ref_translation_x.bmp -di ../generated/video/def/def_translation_x.gif -v`
+`$ python3 measuring_deformation.py -ri ../generated/video/ref/ref_translation_x.bmp -dv ../generated/video/def/def_translation_x.gif -v`
 
 ### Testing
 
